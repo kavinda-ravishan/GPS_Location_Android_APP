@@ -12,12 +12,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView textView1;
     TextView textView2;
-    TextView textView3;
-    TextView textView4;
     TextView textView5;
     TextView textView6;
 
@@ -96,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
             textView1.setText("Latitude : " + lat);
             textView2.setText("Longitude : " + lon);
 
-            textView3.setText(converterNS(Lat));
-            textView4.setText(converterEW(Lon));
-
             textView5.setText("Altitude : " + String.valueOf(alt) + " m");
 
             textView6.setText("Speed : " + String.valueOf(speed) + " m/s");
@@ -124,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
         textView1 = (TextView) findViewById(R.id.textView1);
         textView2 = (TextView) findViewById(R.id.textView2);
-        textView3 = (TextView) findViewById(R.id.textView3);
-        textView4 = (TextView) findViewById(R.id.textView4);
         textView5 = (TextView) findViewById(R.id.textView5);
         textView6 = (TextView) findViewById(R.id.textView6);
 
@@ -142,5 +145,44 @@ public class MainActivity extends AppCompatActivity {
         });
 
         runnable.run();
+
+        //POST req
+        TextView textView7;
+        Button send;
+        textView7 = (TextView) findViewById(R.id.textView7);
+        send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView7.setText("---");
+                String url = "http://192.168.1.100:3000/";
+
+                RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+                JSONObject postData = new JSONObject();
+                try {
+                    postData.put("lat", lat);
+                    postData.put("lon", lon);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+                requestQueue.add(jsonObjectRequest);
+            }
+        });
     }
 }
