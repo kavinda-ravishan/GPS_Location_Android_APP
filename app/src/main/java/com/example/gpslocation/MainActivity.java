@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
     TextView textView2;
     TextView textView5;
     TextView textView6;
+    TextView textView7;
 
-    Button button;
+    Button shareBtn;
+    Button sendBtn;
 
     private double Lat ;
     private double Lon ;
@@ -38,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     private String lat;
     private String lon;
+    private String res;
 
     private Location l;
+
+    private boolean islocationsharing = false;
 
     private String converterNS(double code) {
 
@@ -116,9 +122,48 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             display();
+            if(islocationsharing) {
+                PostLocation();
+            }
             handler.postDelayed(this,1000);
         }
     };
+
+    private void  PostLocation(){
+        textView7.setText("---");
+        String url = "http://192.168.1.101:3000/api/location";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("Latitude", lat);
+            postData.put("Longitude", lon);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    res = response.getString("msg");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(res);
+                textView7.setText(res);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +176,12 @@ public class MainActivity extends AppCompatActivity {
         textView2 = (TextView) findViewById(R.id.textView2);
         textView5 = (TextView) findViewById(R.id.textView5);
         textView6 = (TextView) findViewById(R.id.textView6);
+        textView7 = (TextView) findViewById(R.id.textView7);
 
-        button = (Button) findViewById(R.id.button);
+        shareBtn = (Button) findViewById(R.id.shareBtn);
+        sendBtn = (Button) findViewById(R.id.sendBtn);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
@@ -147,41 +194,16 @@ public class MainActivity extends AppCompatActivity {
         runnable.run();
 
         //POST req
-        TextView textView7;
-        Button send;
-        textView7 = (TextView) findViewById(R.id.textView7);
-        send = (Button) findViewById(R.id.send);
-
-        send.setOnClickListener(new View.OnClickListener() {
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView7.setText("---");
-                String url = "http://192.168.1.100:3000/";
-
-                RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-
-                JSONObject postData = new JSONObject();
-                try {
-                    postData.put("lat", lat);
-                    postData.put("lon", lon);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                islocationsharing = !islocationsharing;
+                if(islocationsharing) {
+                    sendBtn.setText("Stop");
                 }
-
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-
-                requestQueue.add(jsonObjectRequest);
+                else {
+                    sendBtn.setText("Start");
+                }
             }
         });
     }

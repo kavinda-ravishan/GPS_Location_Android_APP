@@ -62,7 +62,7 @@
         android:textColor="#ffffff" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/shareBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="3"
@@ -74,15 +74,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:lines="2"
-        android:text="Speed"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="___"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="#ffffff" />
 
     <Button
-        android:id="@+id/send"
+        android:id="@+id/sendBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="3"
-        android:text="Send" />
+        android:text="Start" />
 
 </LinearLayout>
