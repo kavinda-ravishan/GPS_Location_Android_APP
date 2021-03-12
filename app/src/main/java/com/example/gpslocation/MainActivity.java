@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,9 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView1;
     TextView textView2;
+    TextView textView3;
+    TextView textView4;
     TextView textView5;
     TextView textView6;
     TextView textView7;
+
+    EditText urlTxtBox;
 
     Button shareBtn;
     Button sendBtn;
@@ -45,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Location l;
 
-    private boolean islocationsharing = false;
+    private boolean isLocationSharing = false;
+
+    private String serverURL;
 
     private String converterNS(double code) {
 
@@ -110,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
             textView1.setText("Latitude : " + lat);
             textView2.setText("Longitude : " + lon);
 
+            textView3.setText(converterNS(Lat));
+            textView4.setText(converterEW(Lon));
+
             textView5.setText("Altitude : " + String.valueOf(alt) + " m");
 
             textView6.setText("Speed : " + String.valueOf(speed) + " m/s");
@@ -122,17 +133,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             display();
-            if(islocationsharing) {
-                PostLocation();
+            if(isLocationSharing) {
+                textView7.setText(PostLocation(serverURL+"/api/location"));
             }
             handler.postDelayed(this,1000);
         }
     };
 
-    private void  PostLocation(){
-        textView7.setText("---");
-        String url = "http://192.168.1.101:3000/api/location";
-
+    private String  PostLocation(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
 
         JSONObject postData = new JSONObject();
@@ -153,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 System.out.println(res);
-                textView7.setText(res);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -163,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         requestQueue.add(jsonObjectRequest);
+        return res;
     }
 
     @Override
@@ -174,9 +182,13 @@ public class MainActivity extends AppCompatActivity {
 
         textView1 = (TextView) findViewById(R.id.textView1);
         textView2 = (TextView) findViewById(R.id.textView2);
+        textView3 = (TextView) findViewById(R.id.textView3);
+        textView4 = (TextView) findViewById(R.id.textView4);
         textView5 = (TextView) findViewById(R.id.textView5);
         textView6 = (TextView) findViewById(R.id.textView6);
         textView7 = (TextView) findViewById(R.id.textView7);
+
+        urlTxtBox = (EditText) findViewById(R.id.urlTxtBox);
 
         shareBtn = (Button) findViewById(R.id.shareBtn);
         sendBtn = (Button) findViewById(R.id.sendBtn);
@@ -197,11 +209,14 @@ public class MainActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                islocationsharing = !islocationsharing;
-                if(islocationsharing) {
+                isLocationSharing = !isLocationSharing;
+                if(isLocationSharing) {
+                    serverURL = urlTxtBox.getText().toString();
+                    urlTxtBox.setInputType(InputType.TYPE_NULL);
                     sendBtn.setText("Stop");
                 }
                 else {
+                    urlTxtBox.setInputType(InputType.TYPE_CLASS_TEXT);
                     sendBtn.setText("Start");
                 }
             }

@@ -15,7 +15,7 @@
         android:gravity="center"
         android:lines="2"
         android:text="Latitude"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ffffff" />
 
     <TextView
@@ -25,20 +25,29 @@
         android:gravity="center"
         android:lines="2"
         android:text="Longitude"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ffffff" />
 
-
-
     <TextView
-        android:id="@+id/textView01"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:lines="1"
-        android:text="- - - - - - - - - - - - -"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:lines="2"
+        android:text="Longitude"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lines="2"
+        android:text="Longitude"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#ffffff" />
+
 
     <TextView
         android:id="@+id/textView5"
@@ -47,7 +56,7 @@
         android:gravity="center"
         android:lines="2"
         android:text="Altitude"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ffffff" />
 
 
@@ -58,15 +67,24 @@
         android:gravity="center"
         android:lines="2"
         android:text="Speed"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ffffff" />
 
     <Button
         android:id="@+id/shareBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="3"
+        android:lines="2"
         android:text="Share My Location" />
+
+    <EditText
+        android:id="@+id/urlTxtBox"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:textColor="#ffffff"
+        android:textAlignment="center"
+        android:text="http://137.135.117.4:3000"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -74,7 +92,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:lines="2"
-        android:text="___"
+        android:text="---"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="#ffffff" />
 
@@ -82,7 +100,7 @@
         android:id="@+id/sendBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="3"
+        android:lines="2"
         android:text="Start" />
 
 </LinearLayout>
