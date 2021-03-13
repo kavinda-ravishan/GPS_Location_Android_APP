@@ -41,13 +41,15 @@ public class MainActivity extends AppCompatActivity {
     Button sendBtn;
     Button sendOnesBtn;
 
-    private double Lat ;
-    private double Lon ;
+    private double lat ;
+    private double lon ;
     private double alt ;
     private float speed ;
 
-    private String lat;
-    private String lon;
+    private String latStr;
+    private String lonStr;
+    private String altStr;
+    private String speedStr;
     private String res;
 
     private Location l;
@@ -107,24 +109,26 @@ public class MainActivity extends AppCompatActivity {
         l = g.getLocation();
 
         if (l != null) {
-            Lat = l.getLatitude();
-            Lon = l.getLongitude();
+            lat = l.getLatitude();
+            lon = l.getLongitude();
 
             alt = l.getAltitude();
             speed = l.getSpeed();
 
-            lat = Double.toString(Lat);
-            lon = Double.toString(Lon);
+            latStr = Double.toString(lat);
+            lonStr = Double.toString(lon);
+            speedStr = String.valueOf(speed);
+            altStr = String.valueOf(alt);
 
-            textView1.setText("Latitude : " + lat);
-            textView2.setText("Longitude : " + lon);
+            textView1.setText("Latitude : " + latStr);
+            textView2.setText("Longitude : " + lonStr);
 
-            textView3.setText(converterNS(Lat));
-            textView4.setText(converterEW(Lon));
+            textView3.setText(converterNS(lat));
+            textView4.setText(converterEW(lon));
 
-            textView5.setText("Altitude : " + String.valueOf(alt) + " m");
+            textView5.setText("Altitude : " + altStr + " m");
 
-            textView6.setText("Speed : " + String.valueOf(speed) + " m/s");
+            textView6.setText("Speed : " + speedStr + " m/s");
         }
     }
 
@@ -146,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("Latitude", lat);
-            postData.put("Longitude", lon);
-            postData.put("Speed", speed);
+            postData.put("Latitude", latStr);
+            postData.put("Longitude", lonStr);
+            postData.put("Speed", speedStr);
 
         } catch (JSONException e) {
             e.printStackTrace();
