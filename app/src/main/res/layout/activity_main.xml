@@ -84,7 +84,7 @@
         android:inputType="text"
         android:textColor="#ffffff"
         android:textAlignment="center"
-        android:text="http://137.135.117.4:3000"/>
+        android:text="http://192.168.1.101:3000/api/location"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -102,5 +102,12 @@
         android:layout_height="wrap_content"
         android:lines="2"
         android:text="Start" />
+
+    <Button
+        android:id="@+id/sendOnesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:text="Send Ones" />
 
 </LinearLayout>

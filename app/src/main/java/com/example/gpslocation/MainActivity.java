@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button shareBtn;
     Button sendBtn;
+    Button sendOnesBtn;
 
     private double Lat ;
     private double Lon ;
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             display();
             if(isLocationSharing) {
-                textView7.setText(PostLocation(serverURL+"/api/location"));
+                textView7.setText(PostLocation(serverURL));
             }
             handler.postDelayed(this,1000);
         }
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             postData.put("Latitude", lat);
             postData.put("Longitude", lon);
+            postData.put("Speed", speed);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -192,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
 
         shareBtn = (Button) findViewById(R.id.shareBtn);
         sendBtn = (Button) findViewById(R.id.sendBtn);
+        sendOnesBtn = (Button) findViewById(R.id.sendOnesBtn);
+
 
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent,"Share using"));
             }
         });
-
-        runnable.run();
 
         //POST req
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +221,15 @@ public class MainActivity extends AppCompatActivity {
                     urlTxtBox.setInputType(InputType.TYPE_CLASS_TEXT);
                     sendBtn.setText("Start");
                 }
+            }
+        });
+        runnable.run();
+
+        sendOnesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serverURL = urlTxtBox.getText().toString();
+                textView7.setText(PostLocation(serverURL));
             }
         });
     }
