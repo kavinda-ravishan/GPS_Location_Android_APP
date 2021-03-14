@@ -101,13 +101,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="2"
-        android:text="Start" />
-
-    <Button
-        android:id="@+id/sendOnesBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lines="2"
-        android:text="Send Ones" />
+        android:text="Send" />
 
 </LinearLayout>
